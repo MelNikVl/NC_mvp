@@ -1,12 +1,36 @@
 from fastapi import FastAPI
-from routers import auth, todos, users
-import models
-from database import engine
+from fastapi.middleware.cors import CORSMiddleware
+from config.routes import router, materials, geolocation, auth, logs, accessories, testing, for_admins
+from db.db import engine
+from models.models import Base
+from fastapi.staticfiles import StaticFiles
 
-app = FastAPI()
+# создание бд если ее нет (да - втоторой раз) но это ни на что не влияет
+Base.metadata.create_all(bind=engine)
 
-models.Base.metadata.create_all(bind=engine)
+# метод для работы с фастапи
+app = FastAPI(
+    title="NC platform",  # Set the new project name
+    version="0.1",  # Set the project version
+    description="методы работы с API"  # Set the project description
+)
 
-app.include_router(auth.router)
-app.include_router(todos.router)
-app.include_router(users.router)
+# ебота из документации - типа разрешено обращаться с разных адресов
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# добавление роутеров (эта тема что бы связывать урлы с функциями)
+# добавление папки статик для отображения фронта
+app.include_router(router)
+app.include_router(materials)
+app.include_router(geolocation)
+app.include_router(auth)
+app.include_router(logs)
+app.include_router(accessories)
+app.include_router(testing)
+app.include_router(for_admins)
