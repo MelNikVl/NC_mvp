@@ -1,7 +1,6 @@
 from datetime import datetime
 
 from sqlalchemy import Integer, Column, Boolean, ForeignKey, ARRAY, DateTime
-from database import Base, String
 
 
 class Users(Base):
