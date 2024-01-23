@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import Integer, Column, Boolean, ForeignKey, ARRAY, DateTime
+from sqlalchemy import Integer, Column, Boolean, ForeignKey, ARRAY, DateTime, String
 
 
 class Users(Base):
